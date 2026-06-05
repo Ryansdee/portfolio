@@ -1,193 +1,126 @@
 "use client"
 
-import { Check } from "lucide-react"
-import { cn } from "@/lib/utils"
+import { ArrowUpRight } from "lucide-react"
 
-const plans = [
+const services = [
   {
-    id: "starter",
-    label: "Formule 01",
+    num: "01",
     name: "Starter",
-    price: "€300",
-    from: "Prix fixe",
-    features: [
-      "Landing page 1–3 pages",
-      "Design responsive mobile",
-      "Formulaire de contact",
-      "SEO de base",
-      "Déploiement inclus",
-    ],
-    featured: false,
+    description: "Landing page soignée, responsive, prête à convertir. Idéal pour un lancement rapide ou une présence en ligne professionnelle.",
+    scope: ["1 à 3 pages", "Design responsive", "Formulaire de contact", "SEO de base", "Déploiement inclus"],
   },
   {
-    id: "business",
-    label: "Formule 02",
+    num: "02",
     name: "Business",
-    price: "€600",
-    from: "À partir de",
-    badge: "Populaire",
-    features: [
-      "Jusqu'à 8 pages",
-      "Animations Framer Motion",
-      "CMS ou back-office",
-      "Analytics & SEO avancé",
-      "Formulaires avancés",
-    ],
-    featured: true,
+    description: "Site complet avec animations, back-office et analytics. Pour les entreprises qui veulent se démarquer sérieusement.",
+    scope: ["Jusqu'à 8 pages", "Animations Framer Motion", "CMS ou back-office", "SEO avancé", "Formulaires avancés"],
   },
   {
-    id: "ecommerce",
-    label: "Formule 03",
+    num: "03",
     name: "E-commerce",
-    price: "€750",
-    from: "À partir de",
-    features: [
-      "Intégration Stripe complète",
-      "Authentification utilisateurs",
-      "Dashboard admin",
-      "Firebase backend",
-      "Emails automatisés",
-    ],
-    featured: false,
+    description: "Boutique ou SaaS avec paiements, authentification et dashboard admin. Une solution full-stack clé en main.",
+    scope: ["Stripe intégré", "Auth utilisateurs", "Dashboard admin", "Firebase backend", "Emails automatisés"],
   },
   {
-    id: "premium",
-    label: "Formule 04",
+    num: "04",
     name: "Premium",
-    price: "€1200",
-    from: "À partir de",
-    features: [
-      "Architecture full-stack",
-      "Rôles & permissions",
-      "App mobile incluse",
-      "Intégrations API tierces",
-      "3 mois maintenance offerts",
-    ],
-    featured: false,
+    description: "Architecture complexe, app mobile, rôles et permissions. Pour les projets ambitieux qui demandent une expertise complète.",
+    scope: ["Full-stack sur mesure", "Rôles & permissions", "App mobile incluse", "Intégrations API", "3 mois maintenance"],
   },
 ]
 
-interface PricingProps {
-  onSelectPlan?: (planName: string) => void
-}
+export default function Pricing() {
+  const scrollToContact = () => {
+    document.getElementById("contact")?.scrollIntoView({ behavior: "smooth" })
+  }
 
-export default function Pricing({ onSelectPlan }: PricingProps) {
   return (
     <section id="tarifs" className="border-b border-neutral-200">
       {/* Header */}
-      <div className="max-w-6xl mx-auto px-6 py-6 border-b border-neutral-100 flex items-center justify-between">
+      <div className="max-w-6xl mx-auto px-6 py-5 border-b border-neutral-100 flex items-baseline justify-between">
         <span className="text-xs font-semibold text-neutral-400 uppercase tracking-wider">
-          Tarifs & Formules
+          Formules
         </span>
-        <span className="text-xs text-neutral-400">
-          Devis personnalisé gratuit sous 24h
+        <span className="text-xs font-mono text-neutral-300">
+          Prix sur devis
         </span>
+      </div>
+
+      {/* Intro */}
+      <div className="max-w-6xl mx-auto px-6 py-10 border-b border-neutral-100 flex flex-col sm:flex-row sm:items-end justify-between gap-6">
+        <p className="text-2xl sm:text-3xl font-semibold tracking-tight text-neutral-900 leading-snug max-w-lg">
+          Chaque projet est unique.<br />
+          <span className="text-neutral-400">Chaque devis aussi.</span>
+        </p>
+        <button
+          onClick={scrollToContact}
+          className="inline-flex items-center gap-2 text-sm font-medium bg-neutral-900 text-white px-5 py-2.5 rounded-md hover:bg-neutral-700 transition-colors self-start sm:self-auto shrink-0"
+        >
+          Demander un devis
+          <ArrowUpRight size={14} />
+        </button>
       </div>
 
       {/* Grid */}
       <div className="max-w-6xl mx-auto px-6">
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 divide-x divide-y divide-neutral-100">
-          {plans.map((plan) => (
+          {services.map((s) => (
             <div
-              key={plan.id}
-              className={cn(
-                "p-7 flex flex-col transition-colors duration-150",
-                plan.featured
-                  ? "bg-neutral-900 hover:bg-neutral-800"
-                  : "hover:bg-neutral-50"
-              )}
+              key={s.num}
+              className="group p-7 flex flex-col gap-5 hover:bg-neutral-50 transition-colors duration-150 relative overflow-hidden"
             >
-              {/* Label + badge */}
-              <div className="flex items-center gap-2 mb-2">
-                <span
-                  className={cn(
-                    "text-xs font-semibold uppercase tracking-wider",
-                    plan.featured ? "text-neutral-500" : "text-neutral-300"
-                  )}
-                >
-                  {plan.label}
+              {/* Accent line */}
+              <div className="absolute top-0 left-0 w-full h-[2px] bg-neutral-900 scale-x-0 group-hover:scale-x-100 transition-transform duration-200 origin-left" />
+
+              {/* Num + name */}
+              <div>
+                <span className="text-xs font-mono text-neutral-300 block mb-2">
+                  {s.num}
                 </span>
-                {plan.badge && (
-                  <span
-                    className={cn(
-                      "text-xs px-2 py-0.5 rounded",
-                      plan.featured
-                        ? "bg-white/10 text-neutral-400"
-                        : "bg-neutral-100 text-neutral-500"
-                    )}
-                  >
-                    {plan.badge}
-                  </span>
-                )}
+                <h3 className="text-sm font-semibold text-neutral-900 tracking-tight">
+                  {s.name}
+                </h3>
               </div>
 
-              {/* Name */}
-              <h3
-                className={cn(
-                  "text-base font-semibold tracking-tight mb-4",
-                  plan.featured ? "text-white" : "text-neutral-900"
-                )}
-              >
-                {plan.name}
-              </h3>
+              {/* Description */}
+              <p className="text-sm text-neutral-400 leading-relaxed flex-1">
+                {s.description}
+              </p>
 
-              {/* Price */}
-              <div className="mb-1">
-                <span
-                  className={cn(
-                    "text-3xl font-semibold tracking-tight",
-                    plan.featured ? "text-white" : "text-neutral-900"
-                  )}
-                >
-                  {plan.price}
-                </span>
-              </div>
-              <span
-                className={cn(
-                  "text-xs mb-6",
-                  plan.featured ? "text-neutral-500" : "text-neutral-400"
-                )}
-              >
-                {plan.from}
-              </span>
-
-              {/* Features */}
-              <ul className="flex-1 flex flex-col gap-2.5 mb-6">
-                {plan.features.map((feature) => (
-                  <li
-                    key={feature}
-                    className={cn(
-                      "flex items-start gap-2 text-sm",
-                      plan.featured ? "text-neutral-400" : "text-neutral-500"
-                    )}
-                  >
-                    <Check
-                      size={13}
-                      className={cn(
-                        "mt-0.5 shrink-0",
-                        plan.featured ? "text-neutral-500" : "text-neutral-300"
-                      )}
-                    />
-                    {feature}
+              {/* Scope */}
+              <ul className="flex flex-col gap-1.5">
+                {s.scope.map((item) => (
+                  <li key={item} className="flex items-center gap-2">
+                    <span className="w-1 h-1 rounded-full bg-neutral-300 shrink-0" />
+                    <span className="text-xs text-neutral-400">{item}</span>
                   </li>
                 ))}
               </ul>
 
               {/* CTA */}
               <button
-                onClick={() => onSelectPlan?.(plan.name)}
-                className={cn(
-                  "w-full text-sm font-medium py-2.5 rounded-md border transition-all duration-150",
-                  plan.featured
-                    ? "border-white/20 text-white hover:bg-white/10"
-                    : "border-neutral-200 text-neutral-600 hover:border-neutral-400 hover:text-neutral-900"
-                )}
+                onClick={scrollToContact}
+                className="flex items-center justify-between w-full text-xs font-medium text-neutral-500 border border-neutral-200 px-3.5 py-2 rounded-md hover:border-neutral-400 hover:text-neutral-900 transition-all duration-150 group/btn mt-auto"
               >
-                Demander un devis
+                Obtenir un devis
+                <ArrowUpRight
+                  size={12}
+                  className="text-neutral-300 group-hover/btn:text-neutral-700 transition-colors"
+                />
               </button>
             </div>
           ))}
         </div>
+      </div>
+
+      {/* Footer note */}
+      <div className="max-w-6xl mx-auto px-6 py-4 border-t border-neutral-100">
+        <p className="text-xs text-neutral-400 leading-relaxed">
+          Tous les projets font l'objet d'un devis personnalisé gratuit.
+          Les formules ci-dessus reflètent la portée habituelle de chaque type de mission —
+          le tarif final dépend de vos besoins spécifiques, délais et fonctionnalités.
+          <span className="text-neutral-600 font-medium"> Réponse sous 24h.</span>
+        </p>
       </div>
     </section>
   )

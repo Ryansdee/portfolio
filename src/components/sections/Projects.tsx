@@ -1,193 +1,122 @@
 "use client"
 import Link from "next/link"
 import Image from "next/image"
-import { ImageOff } from "lucide-react"
-import { useState } from "react"
-import { ArrowUpRight } from "lucide-react"
+import { useRef } from "react"
 
 const projects = [
-  {
-    num: "01",
-    title: "Portfolio Personnel",
-    description: "Portfolio personnel responsive présentant mes projets, réalisé avec HTML, Tailwind CSS et JavaScript.",
-    image: "/projects/ryansdee.png",
-    url: "https://ryansdee.netlify.app/",
-    tags: ["Next.js", "Tailwind CSS", "Framer Motion"]
-  },
-  {
-    num: "02",
-    title: "Clubtwee",
-    description: "Site vitrine réalisé dans le cadre d’un projet d’entraînement pour un café local.",
-    image: "/projects/clubtwee.png",
-    url: "https://clubtwee.netlify.app/",
-    tags: ["html", "Tailwind CSS", "Framer Motion"]
-  },
-  {
-    num: "03",
-    title: "Vits Architecture",
-    description: "Landing page moderne et performante conçue pour le cabinet Vits Architecture.",
-    image: "/projects/vits.png",
-    url: "https://vits-architecture.netlify.app/",
-    tags: ["html", "Tailwind CSS", "Framer Motion"]
-  },
-  {
-    num: "04",
-    title: "Garage Laurent",
-    description: "Site vitrine optimisé pour la visibilité en ligne d’un garage automobile.",
-    image: "/projects/garage.png",
-    url: "https://garagelaurent.be/",
-    tags: ["Php", "Tailwind CSS"]
-  },
-  {
-    num: "05",
-    title: "SubTrack",
-    description: "Application web permettant de suivre, comparer et optimiser ses abonnements en ligne.",
-    image: "/projects/subtrack.png",
-    url: "https://tracksub.netlify.app/",
-    tags: ["Next.js", "Tailwind CSS", "Framer Motion", "Firebase"]
-  },
-  {
-    num: "06",
-    title: "Books & Bites",
-    description: "Plateforme collaborative de critiques littéraires et culinaires créée pour un groupe d’amies.",
-    image: "/projects/booksandbites.png",
-    url: "https://books-and-bites.netlify.app/",
-    tags: ["Next.js", "Tailwind CSS", "Framer Motion", "Firebase"]
-  },
-  {
-    num: "07",
-    title: "Vadim Thevelin Portfolio",
-    description: "Portfolio immersif mettant en valeur le travail photographique de Vadim Thevelin.",
-    image: "/projects/vadim.png",
-    url: "https://vath-portofolio.netlify.app/",
-    tags: ["Next.js", "Tailwind CSS", "Framer Motion"]
-  },
-  {
-    num: "08",
-    title: "Woppy",
-    description: "Plateforme de mise en relation entre étudiants et recruteurs pour des emplois flexibles et locaux.",
-    image: "/projects/woppy.png",
-    url: "https://woppy.netlify.app/",
-    tags: ["Next.js", "Tailwind CSS", "Framer Motion", "Firebase", "nodemailer", "Stripe", "Leaflet"]
-  },
-  {
-    num: "09",
-    title: "Le Brouillon",
-    description: "Plateforme dédiée à une écrivaine pour publier des œuvres et partager des conseils d’écriture.",
-    image: "/projects/lebrouillon.png",
-    url: "https://le-brouillon.netlify.app/",
-    tags: ["Next.js", "Tailwind CSS", "Framer Motion", "Firebase"]
-  },
+  { num: "01", title: "Portfolio Personnel", description: "Portfolio responsive avec animations Framer Motion.", image: "/projects/ryansdee.png", url: "https://ryansdee.netlify.app/", tags: ["Next.js", "Tailwind", "Framer"] },
+  { num: "02", title: "Clubtwee", description: "Site vitrine pour un café local — identité soignée.", image: "/projects/clubtwee.png", url: "https://clubtwee.netlify.app/", tags: ["HTML", "Tailwind"] },
+  { num: "03", title: "Vits Architecture", description: "Landing page pour un cabinet d'architecture belge.", image: "/projects/vits.png", url: "https://vits-architecture.netlify.app/", tags: ["HTML", "Tailwind"] },
+  { num: "04", title: "Garage Laurent", description: "Site avec backend PHP pour un garage automobile.", image: "/projects/garage.png", url: "https://garagelaurent.be/", tags: ["PHP", "Tailwind"] },
+  { num: "05", title: "SubTrack", description: "Suivi et optimisation d'abonnements en ligne.", image: "/projects/subtrack.png", url: "https://tracksub.netlify.app/", tags: ["Next.js", "Firebase"] },
+  { num: "06", title: "Books & Bites", description: "Plateforme collaborative de critiques littéraires.", image: "/projects/booksandbites.png", url: "https://books-and-bites.netlify.app/", tags: ["Next.js", "Firebase"] },
+  { num: "07", title: "Vadim Thevelin", description: "Portfolio photographique immersif avec portail client.", image: "/projects/vadim.png", url: "https://vath-portofolio.netlify.app/", tags: ["Next.js", "Firebase"] },
+  { num: "08", title: "Woppy", description: "Marketplace emplois étudiants — géoloc, paiements, notifs.", image: "/projects/woppy.png", url: "https://woppy.netlify.app/", tags: ["Next.js", "Stripe", "Leaflet"] },
+  { num: "09", title: "Le Brouillon", description: "Plateforme éditoriale pour une écrivaine belge.", image: "/projects/lebrouillon.png", url: "https://le-brouillon.netlify.app/", tags: ["Next.js", "Firebase"] },
 ]
 
-export default function Projects() {
-  const [hovered, setHovered] = useState<string | null>(null)
+function ProjectCard({ project }: { project: typeof projects[0] }) {
+  const cardRef = useRef<HTMLDivElement>(null)
+
+  const handleMouseMove = (e: React.MouseEvent<HTMLDivElement>) => {
+    const card = cardRef.current
+    if (!card) return
+    const r = card.getBoundingClientRect()
+    const x = (e.clientX - r.left) / r.width - 0.5
+    const y = (e.clientY - r.top) / r.height - 0.5
+    card.style.transform = `rotateX(${-y * 14}deg) rotateY(${x * 14}deg) scale(1.02)`
+  }
+
+  const handleMouseLeave = () => {
+    if (cardRef.current)
+      cardRef.current.style.transform = "rotateX(4deg) rotateY(-4deg) scale(0.97)"
+  }
 
   return (
-    <section id="projets" className="border-b border-neutral-200">
-      {/* Header */}
-      <div className="max-w-6xl mx-auto px-6 py-6 border-b border-neutral-100 flex items-center justify-between">
-        <span className="text-xs font-semibold text-neutral-400 uppercase tracking-wider">
-          Projets sélectionnés
-        </span>
-        <span className="text-xs text-neutral-300">{projects.length} projets</span>
-      </div>
+    <div
+      className="[perspective:900px]"
+      onMouseMove={handleMouseMove}
+      onMouseLeave={handleMouseLeave}
+    >
+      <Link href={project.url} target="_blank" rel="noopener noreferrer">
+        <div
+          ref={cardRef}
+          className="relative rounded-[14px] overflow-hidden cursor-pointer [transform-style:preserve-3d] [transform:rotateX(4deg)_rotateY(-4deg)_scale(0.97)] transition-[transform,box-shadow] duration-[350ms] ease-[cubic-bezier(.23,1,.32,1)] bg-neutral-900 aspect-[4/3] group hover:[box-shadow:0_24px_60px_rgba(0,0,0,.22),0_4px_12px_rgba(0,0,0,.12)]"
+        >
+          {/* Image */}
+          <Image
+            src={project.image}
+            alt={project.title}
+            fill
+            className="object-cover transition-[transform,filter] duration-500 ease-[cubic-bezier(.23,1,.32,1)] group-hover:scale-[1.04] group-hover:brightness-[0.45]"
+            sizes="(max-width: 768px) 100vw, 33vw"
+          />
 
-      {/* Layout : liste + aperçu image */}
-      <div className="max-w-6xl mx-auto px-6 flex gap-0">
+          {/* Gradient overlay */}
+          <div className="absolute inset-0 bg-gradient-to-t from-black/85 via-transparent to-transparent" />
 
-        {/* Liste */}
-        <div className="flex-1">
-          {projects.map((project) => (
-            <Link
-              key={project.num}
-              href={project.url}
-              onMouseEnter={() => setHovered(project.num)}
-              onMouseLeave={() => setHovered(null)}
-              className="group flex items-center gap-4 py-4 border-b border-neutral-100 last:border-0 hover:bg-neutral-50 -mx-6 px-6 transition-colors duration-150"
-            >
-              {/* Numéro */}
-              <span className="w-8 text-xs font-mono text-neutral-300 shrink-0">
-                {project.num}
-              </span>
+          {/* Shine */}
+          <div className="absolute inset-0 rounded-[14px] opacity-0 group-hover:opacity-100 transition-opacity duration-300 bg-[radial-gradient(circle_at_30%_30%,rgba(255,255,255,.06),transparent_60%)] pointer-events-none" />
 
-              {/* Titre + desc */}
-              <div className="flex-1 min-w-0">
-                <span className="text-sm font-medium text-neutral-900 tracking-tight">
-                  {project.title}
+          {/* Arrow */}
+          <div className="absolute top-3.5 right-3.5 w-7 h-7 rounded-full bg-white/10 border border-white/20 flex items-center justify-center opacity-0 scale-75 group-hover:opacity-100 group-hover:scale-100 transition-all duration-200 text-white text-[13px]">
+            ↗
+          </div>
+
+          {/* Info */}
+          <div className="absolute bottom-0 left-0 right-0 p-[18px] translate-y-1 group-hover:translate-y-0 transition-transform duration-[350ms] ease-[cubic-bezier(.23,1,.32,1)]">
+            <p className="text-[10px] font-mono text-white/45 tracking-[.12em] mb-1">{project.num}</p>
+            <p className="font-serif text-[17px] font-normal text-white leading-tight mb-1.5">{project.title}</p>
+            <p className="text-[11px] text-white/60 leading-relaxed max-h-0 overflow-hidden opacity-0 group-hover:max-h-16 group-hover:opacity-100 transition-all duration-300">
+              {project.description}
+            </p>
+            <div className="flex flex-wrap gap-1 mt-2.5 opacity-0 translate-y-1.5 group-hover:opacity-100 group-hover:translate-y-0 transition-all duration-300 delay-[50ms]">
+              {project.tags.map((tag) => (
+                <span key={tag} className="text-[9px] tracking-[.08em] uppercase text-white/70 border border-white/25 px-[7px] py-[3px] rounded-sm">
+                  {tag}
                 </span>
-                <span className="text-sm text-neutral-400 ml-3">
-                  {project.description}
-                </span>
-              </div>
+              ))}
+            </div>
+          </div>
+        </div>
+      </Link>
+    </div>
+  )
+}
 
-              {/* Tags */}
-              <div className="hidden sm:flex items-center gap-1.5 shrink-0">
-                {project.tags.map((tag) => (
-                  <span
-                    key={tag}
-                    className="text-xs text-neutral-400 bg-neutral-100 border border-neutral-200 px-2 py-0.5 rounded"
-                  >
-                    {tag}
-                  </span>
-                ))}
-              </div>
-
-              {/* Arrow */}
-              <ArrowUpRight
-                size={15}
-                className="text-neutral-300 group-hover:text-neutral-600 shrink-0 transition-colors"
-              />
-            </Link>
-          ))}
+export default function Projects() {
+  return (
+    <section id="projets" className="border-b border-neutral-200 py-12">
+      <div className="max-w-6xl mx-auto px-6">
+        {/* Header */}
+        <div className="flex items-end justify-between pb-8 border-b border-neutral-100 mb-10">
+          <div>
+            <p className="text-[10px] tracking-[.16em] uppercase text-neutral-400 font-medium mb-1.5">
+              Travaux sélectionnés
+            </p>
+            <h2 className="font-serif text-[32px] font-normal tracking-tight text-neutral-900 leading-none">
+              Projets
+            </h2>
+          </div>
+          <div className="text-right">
+            <p className="text-[11px] text-neutral-400 tabular-nums">2022 — 2026</p>
+            <p className="text-[11px] text-neutral-400 tabular-nums mt-0.5">09 références</p>
+          </div>
         </div>
 
-        {/* Aperçu image — sticky à droite */}
-        <div className="hidden lg:flex w-72 shrink-0 items-start justify-end pl-8 py-4">
-          <div className="sticky top-20 w-full">
-            <div className="w-full aspect-video rounded-lg border border-neutral-200 overflow-hidden bg-neutral-50 relative">
-              {hovered ? (
-                (() => {
-                  const project = projects.find((p) => p.num === hovered)
-                  return project?.image ? (
-                    <Image
-                      src={project.image}
-                      alt={project.title}
-                      fill
-                      className="object-cover transition-opacity duration-200"
-                      sizes="280px"
-                      loading="eager"
-                    />
-                  ) : (
-                    <div className="w-full h-full flex flex-col items-center justify-center gap-2">
-                      <ImageOff size={20} className="text-neutral-300" />
-                      <span className="text-xs text-neutral-300">
-                        Pas d'aperçu
-                      </span>
-                    </div>
-                  )
-                })()
-              ) : (
-                <div className="w-full h-full flex flex-col items-center justify-center gap-2">
-                  <span className="text-xs text-neutral-300">
-                    Survolez un projet
-                  </span>
-                </div>
-              )}
-            </div>
+        {/* Grid 3D */}
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+          {projects.map((p) => <ProjectCard key={p.num} project={p} />)}
+        </div>
 
-            {/* Infos du projet survolé */}
-            {hovered && (
-              <div className="mt-3 px-1">
-                <p className="text-sm font-medium text-neutral-900 tracking-tight">
-                  {projects.find((p) => p.num === hovered)?.title}
-                </p>
-                <p className="text-xs text-neutral-400 mt-0.5">
-                  {projects.find((p) => p.num === hovered)?.description}
-                </p>
-              </div>
-            )}
-          </div>
+        {/* Footer */}
+        <div className="flex items-center justify-between pt-7 mt-10 border-t border-neutral-100">
+          <span className="text-[10px] tracking-[.14em] uppercase text-neutral-400">
+            Belgique · Disponible
+          </span>
+          <span className="font-serif text-[13px] italic text-neutral-500">
+            Chaque projet, une intention.
+          </span>
         </div>
       </div>
     </section>

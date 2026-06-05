@@ -2,18 +2,18 @@ import Link from "next/link"
 import { MapPin } from "lucide-react"
 
 const stats = [
-  { label: "Statut", value: "● Disponible immédiatement", green: true },
+  { label: "Statut", value: "Disponible", green: true },
   { label: "Localisation", value: "Belgique" },
-  { label: "Expérience", value: "3+ ans · Freelance" },
+  { label: "Expérience", value: "4+ ans · Freelance" },
   { label: "Stack principal", value: "Next.js · Firebase · Tailwind", mono: true },
   { label: "Projets livrés", value: "12+" },
-  { label: "Réponse", value: "Sous 24h" },
+  { label: "Délai de réponse", value: "Sous 72h" },
 ]
 
 const pills = [
   "TypeScript", "React", "Next.js", "Tailwind CSS",
   "Firebase", "Stripe", "Framer Motion", "React Native",
-   "Nodemailer", "Linux",
+  "Nodemailer", "Linux",
 ]
 
 function cn(...classes: (string | boolean | undefined)[]) {
@@ -68,15 +68,25 @@ export default function Hero() {
                 className="flex justify-between items-center px-5 py-3.5 border-b border-neutral-100 last:border-0"
               >
                 <span className="text-sm text-neutral-400">{stat.label}</span>
-                <span
-                  className={cn(
-                    "text-sm font-medium",
-                    stat.green && "text-green-600",
-                    stat.mono && "font-mono text-xs text-neutral-500 font-normal"
-                  )}
-                >
-                  {stat.value}
-                </span>
+
+                {stat.green ? (
+                  <span className="flex items-center gap-1.5 text-sm font-medium text-green-600">
+                    <span className="relative flex h-2 w-2">
+                      <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-green-400 opacity-75" />
+                      <span className="relative inline-flex rounded-full h-2 w-2 bg-green-500" />
+                    </span>
+                    {stat.value}
+                  </span>
+                ) : (
+                  <span
+                    className={cn(
+                      "text-sm font-medium",
+                      stat.mono && "font-mono text-xs text-neutral-500 font-normal"
+                    )}
+                  >
+                    {stat.value}
+                  </span>
+                )}
               </div>
             ))}
           </div>

@@ -1,4 +1,5 @@
 export interface ContactRequest {
+  service: string
   id?: string
   firstName: string
   lastName: string
@@ -35,4 +36,28 @@ export interface PricingPlan {
   from: string
   features: string[]
   featured?: boolean
+}
+
+export interface QuoteItem {
+  title: string
+  description: string
+  unitPrice: number
+  quantity: number
+}
+
+export interface Quote {
+  id?: string
+  quoteNumber: string       // "DEV-2026-001"
+  requestId: string
+  clientName: string
+  clientEmail: string
+  items: QuoteItem[]
+  subtotal: number
+  vatRate: number           // 0.21
+  vatAmount: number
+  total: number
+  status: "draft" | "sent" | "accepted" | "rejected"
+  createdAt?: string
+  sentAt?: string
+  token: string
 }

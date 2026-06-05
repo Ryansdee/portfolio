@@ -15,23 +15,21 @@ const transporter = nodemailer.createTransport({
 export async function POST(req: NextRequest) {
   try {
     const body = await req.json()
-    const { firstName, lastName, email, plan, budget, description } = body
+    const { firstName, lastName, email, service, description } = body
 
-    if (!firstName || !lastName || !email || !description) {
+    if (!firstName || !lastName || !email || !service || !description) {
       return NextResponse.json({ error: "Champs manquants" }, { status: 400 })
     }
 
-    // Génère un token unique
     const token = generateToken()
     const portalUrl = `${process.env.NEXT_PUBLIC_SITE_URL}/portail?token=${token}`
 
-    // Sauvegarde dans Firestore
+    // Sauvegarde Firestore
     await addDoc(collection(db, "contact_requests"), {
       firstName,
       lastName,
       email,
-      plan,
-      budget,
+      service,
       description,
       status: "new",
       token,
@@ -39,11 +37,11 @@ export async function POST(req: NextRequest) {
       createdAt: serverTimestamp(),
     })
 
-    // Email de notification pour toi
+    // Notification admin
     await transporter.sendMail({
       from: `"Portfolio" <${process.env.MAIL_USER}>`,
       to: process.env.MAIL_TO,
-      subject: `🆕 Nouvelle demande — ${plan} — ${firstName} ${lastName}`,
+      subject: `Nouvelle demande — ${service} — ${firstName} ${lastName}`,
       html: `
         <div style="font-family:'Inter',sans-serif;max-width:600px;margin:0 auto;padding:32px 24px;background:#fff;">
           <div style="margin-bottom:24px;padding-bottom:24px;border-bottom:1px solid #f0f0f0;">
@@ -62,12 +60,8 @@ export async function POST(req: NextRequest) {
               <td style="padding:10px 0;color:#111;font-size:13px;">${email}</td>
             </tr>
             <tr style="border-bottom:1px solid #f5f5f5;">
-              <td style="padding:10px 0;color:#999;font-size:13px;">Formule</td>
-              <td style="padding:10px 0;color:#111;font-size:13px;">${plan}</td>
-            </tr>
-            <tr style="border-bottom:1px solid #f5f5f5;">
-              <td style="padding:10px 0;color:#999;font-size:13px;">Budget</td>
-              <td style="padding:10px 0;color:#111;font-size:13px;">${budget || "Non précisé"}</td>
+              <td style="padding:10px 0;color:#999;font-size:13px;">Service</td>
+              <td style="padding:10px 0;color:#111;font-size:13px;">${service}</td>
             </tr>
             <tr>
               <td style="padding:10px 0;color:#999;font-size:13px;vertical-align:top;">Description</td>
@@ -83,7 +77,7 @@ export async function POST(req: NextRequest) {
       `,
     })
 
-    // Email de confirmation pour le client avec lien portail
+    // Confirmation client
     await transporter.sendMail({
       from: `"Ryan Deschuyteneer" <${process.env.MAIL_USER}>`,
       to: email,
@@ -100,7 +94,7 @@ export async function POST(req: NextRequest) {
             Bonjour ${firstName},
           </h2>
           <p style="color:#666;font-size:14px;line-height:1.7;margin-bottom:24px;">
-            Merci pour votre demande concernant la formule <strong style="color:#111;">${plan}</strong>.
+            Merci pour votre demande concernant <strong style="color:#111;">${service}</strong>.
             Je l'ai bien reçue et vous recontacte sous 24h avec une estimation personnalisée.
           </p>
 
