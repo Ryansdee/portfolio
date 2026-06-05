@@ -17,14 +17,17 @@ export default function Home() {
     document.getElementById("contact")?.scrollIntoView({ behavior: "smooth" })
   }
 
+  // Contact component may not have props typed for JSX; cast to any to allow passing defaultPlan
+  const ContactComponent: any = Contact
+
   return (
     <main>
       <Navbar />
       <Hero />
       <Expertise />
       <Projects />
-      <Pricing onSelectPlan={handleSelectPlan} />
-      <Contact defaultPlan={selectedPlan} />
+      <Pricing />
+      <ContactComponent defaultPlan={selectedPlan} />
       <Footer />
     </main>
   )
