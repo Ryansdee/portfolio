@@ -1,113 +1,92 @@
 import Link from "next/link"
-import { MapPin } from "lucide-react"
 
 const stats = [
-  { label: "Statut", value: "Disponible", green: true },
+  { label: "Statut", value: "Disponible", live: true },
   { label: "Localisation", value: "Belgique" },
-  { label: "Expérience", value: "4+ ans · Freelance" },
-  { label: "Stack principal", value: "Next.js · Firebase · Tailwind", mono: true },
+  { label: "Activité", value: "Freelance depuis 2022" },
+  { label: "Stack principal", value: "Next.js / Firebase / Tailwind" },
   { label: "Projets livrés", value: "12+" },
-  { label: "Délai de réponse", value: "Sous 72h" },
+  { label: "Délai de réponse", value: "Sous 24 h" },
 ]
 
-const pills = [
-  "TypeScript", "React", "Next.js", "Tailwind CSS",
-  "Firebase", "Stripe", "Framer Motion", "React Native",
-  "Nodemailer", "Linux",
+const stack = [
+  "TypeScript", "React", "Next.js", "Tailwind CSS", "Firebase",
+  "Stripe", "Framer Motion", "React Native", "Nodemailer", "Linux",
 ]
-
-function cn(...classes: (string | boolean | undefined)[]) {
-  return classes.filter(Boolean).join(" ")
-}
 
 export default function Hero() {
   return (
-    <>
-      <section className="pt-14 border-b border-neutral-200">
-        <div className="max-w-6xl mx-auto px-6 py-16 grid grid-cols-1 lg:grid-cols-2 gap-12 items-start">
-          <div>
-            <div className="mb-5">
-              <span className="inline-flex items-center gap-2 text-xs text-neutral-500 bg-neutral-100 border border-neutral-200 px-3 py-1.5 rounded-full">
-                <MapPin size={11} />
-                Développeur Web &amp; IT · Belgique
-              </span>
-            </div>
+    <section className="bg-[#FBFAF8] border-b border-neutral-200">
+      <div className="max-w-6xl mx-auto px-6 pt-20 pb-16 sm:pt-28 grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-16 items-start">
+        {/* Texte */}
+        <div>
+          <p className="text-[14px] text-neutral-500 mb-6">
+            Développeur web &amp; IT, basé en Belgique
+          </p>
 
-            <h1 className="text-4xl sm:text-5xl font-semibold tracking-tight text-neutral-900 leading-[1.08] mb-4">
-              Interfaces robustes.
-              <br />
-              <span className="text-neutral-400">Solutions durables.</span>
-            </h1>
+          <h1 className="font-serif text-[44px] sm:text-[60px] leading-[1.05] tracking-tight text-neutral-900 mb-6">
+            Interfaces robustes, solutions durables.
+          </h1>
 
-            <p className="text-base text-neutral-500 leading-relaxed max-w-md mb-8">
-              Je conçois et développe des applications web full-stack pour des
-              clients en Belgique et à distance — du site vitrine au SaaS
-              complet.
-            </p>
+          <p className="text-[16px] leading-relaxed text-neutral-600 max-w-md mb-9">
+            Je conçois et développe des applications web full-stack pour des
+            clients en Belgique et à distance — du site vitrine au SaaS complet.
+          </p>
 
-            <div className="flex items-center gap-3">
-              <Link
-                href="#projets"
-                className="text-sm font-medium bg-neutral-900 text-white px-5 py-2.5 rounded-md hover:bg-neutral-700 transition-colors"
-              >
-                Voir les projets
-              </Link>
-              <Link
-                href="#contact"
-                className="text-sm font-medium text-neutral-700 bg-white border border-neutral-200 px-5 py-2.5 rounded-md hover:border-neutral-400 transition-colors"
-              >
-                Me contacter
-              </Link>
-            </div>
-          </div>
-
-          <div className="bg-neutral-50 border border-neutral-200 rounded-xl overflow-hidden">
-            {stats.map((stat, i) => (
-              <div
-                key={i}
-                className="flex justify-between items-center px-5 py-3.5 border-b border-neutral-100 last:border-0"
-              >
-                <span className="text-sm text-neutral-400">{stat.label}</span>
-
-                {stat.green ? (
-                  <span className="flex items-center gap-1.5 text-sm font-medium text-green-600">
-                    <span className="relative flex h-2 w-2">
-                      <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-green-400 opacity-75" />
-                      <span className="relative inline-flex rounded-full h-2 w-2 bg-green-500" />
-                    </span>
-                    {stat.value}
-                  </span>
-                ) : (
-                  <span
-                    className={cn(
-                      "text-sm font-medium",
-                      stat.mono && "font-mono text-xs text-neutral-500 font-normal"
-                    )}
-                  >
-                    {stat.value}
-                  </span>
-                )}
-              </div>
-            ))}
+          <div className="flex items-center gap-6">
+            <Link
+              href="#projets"
+              className="text-[14px] font-medium bg-neutral-900 text-white px-6 py-3 rounded-md transition-colors hover:bg-neutral-700 outline-none focus-visible:ring-2 focus-visible:ring-neutral-900/60 focus-visible:ring-offset-2 focus-visible:ring-offset-[#FBFAF8]"
+            >
+              Voir les projets
+            </Link>
+            <Link
+              href="#contact"
+              className="text-[14px] text-neutral-900 border-b border-neutral-900 pb-0.5 transition-colors hover:text-neutral-500 hover:border-neutral-400 outline-none focus-visible:text-neutral-500"
+            >
+              Me contacter
+            </Link>
           </div>
         </div>
-      </section>
 
-      <div className="border-b border-neutral-200 bg-neutral-50">
-        <div className="max-w-6xl mx-auto px-6 py-3 flex items-center gap-2 flex-wrap">
-          <span className="text-xs font-semibold text-neutral-300 uppercase tracking-wider mr-2">
-            Stack
-          </span>
-          {pills.map((pill) => (
-            <span
-              key={pill}
-              className="text-xs text-neutral-500 bg-white border border-neutral-200 px-2.5 py-1 rounded"
+        {/* Panneau infos */}
+        <div className="w-full bg-white border border-neutral-200 rounded-xl overflow-hidden">
+          {stats.map((stat) => (
+            <div
+              key={stat.label}
+              className="flex justify-between items-center gap-4 px-5 py-4 border-b border-neutral-100 last:border-0"
             >
-              {pill}
+              <span className="text-[14px] text-neutral-500">{stat.label}</span>
+
+              {stat.live ? (
+                <span className="flex items-center gap-2 text-[14px] font-medium text-emerald-700">
+                  <span className="relative flex h-2 w-2">
+                    <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75" />
+                    <span className="relative inline-flex h-2 w-2 rounded-full bg-emerald-500" />
+                  </span>
+                  {stat.value}
+                </span>
+              ) : (
+                <span className="text-[14px] font-medium text-neutral-900 text-right">
+                  {stat.value}
+                </span>
+              )}
+            </div>
+          ))}
+        </div>
+      </div>
+
+      {/* Bandeau technologies */}
+      <div className="border-t border-neutral-200">
+        <div className="max-w-6xl mx-auto px-6 py-4 flex flex-wrap items-center gap-x-3 gap-y-2 text-[13px] text-neutral-500">
+          {stack.map((tech, i) => (
+            <span key={tech} className="flex items-center gap-x-3">
+              {i > 0 && <span className="text-neutral-300">/</span>}
+              {tech}
             </span>
           ))}
         </div>
       </div>
-    </>
+    </section>
   )
 }

@@ -1,31 +1,35 @@
 "use client"
 
-import { ArrowUpRight } from "lucide-react"
+type Service = {
+  name: string
+  description: string
+  scope: string[]
+}
 
-const services = [
+const services: Service[] = [
   {
-    num: "01",
     name: "Starter",
-    description: "Landing page soignée, responsive, prête à convertir. Idéal pour un lancement rapide ou une présence en ligne professionnelle.",
+    description:
+      "Landing page soignée et responsive, prête à convertir. Idéale pour un lancement rapide ou une première présence en ligne.",
     scope: ["1 à 3 pages", "Design responsive", "Formulaire de contact", "SEO de base", "Déploiement inclus"],
   },
   {
-    num: "02",
     name: "Business",
-    description: "Site complet avec animations, back-office et analytics. Pour les entreprises qui veulent se démarquer sérieusement.",
+    description:
+      "Site complet avec animations, back-office et analytics. Pour les entreprises qui veulent se démarquer sérieusement.",
     scope: ["Jusqu'à 8 pages", "Animations Framer Motion", "CMS ou back-office", "SEO avancé", "Formulaires avancés"],
   },
   {
-    num: "03",
     name: "E-commerce",
-    description: "Boutique ou SaaS avec paiements, authentification et dashboard admin. Une solution full-stack clé en main.",
-    scope: ["Stripe intégré", "Auth utilisateurs", "Dashboard admin", "Firebase backend", "Emails automatisés"],
+    description:
+      "Boutique ou SaaS avec paiements, authentification et tableau de bord admin. Une solution full-stack clé en main.",
+    scope: ["Stripe intégré", "Comptes utilisateurs", "Tableau de bord admin", "Backend Firebase", "Emails automatisés"],
   },
   {
-    num: "04",
     name: "Premium",
-    description: "Architecture complexe, app mobile, rôles et permissions. Pour les projets ambitieux qui demandent une expertise complète.",
-    scope: ["Full-stack sur mesure", "Rôles & permissions", "App mobile incluse", "Intégrations API", "3 mois maintenance"],
+    description:
+      "Architecture complexe, application mobile, rôles et permissions. Pour les projets ambitieux qui demandent une expertise complète.",
+    scope: ["Full-stack sur mesure", "Rôles & permissions", "App mobile incluse", "Intégrations API", "3 mois de maintenance"],
   },
 ]
 
@@ -35,92 +39,78 @@ export default function Pricing() {
   }
 
   return (
-    <section id="tarifs" className="border-b border-neutral-200">
-      {/* Header */}
-      <div className="max-w-6xl mx-auto px-6 py-5 border-b border-neutral-100 flex items-baseline justify-between">
-        <span className="text-xs font-semibold text-neutral-400 uppercase tracking-wider">
-          Formules
-        </span>
-        <span className="text-xs font-mono text-neutral-300">
-          Prix sur devis
-        </span>
-      </div>
-
-      {/* Intro */}
-      <div className="max-w-6xl mx-auto px-6 py-10 border-b border-neutral-100 flex flex-col sm:flex-row sm:items-end justify-between gap-6">
-        <p className="text-2xl sm:text-3xl font-semibold tracking-tight text-neutral-900 leading-snug max-w-lg">
-          Chaque projet est unique.<br />
-          <span className="text-neutral-400">Chaque devis aussi.</span>
-        </p>
-        <button
-          onClick={scrollToContact}
-          className="inline-flex items-center gap-2 text-sm font-medium bg-neutral-900 text-white px-5 py-2.5 rounded-md hover:bg-neutral-700 transition-colors self-start sm:self-auto shrink-0"
-        >
-          Demander un devis
-          <ArrowUpRight size={14} />
-        </button>
-      </div>
-
-      {/* Grid */}
+    <section id="tarifs" className="bg-[#FBFAF8] border-b border-neutral-200 py-20 sm:py-28">
       <div className="max-w-6xl mx-auto px-6">
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 divide-x divide-y divide-neutral-100">
-          {services.map((s) => (
-            <div
-              key={s.num}
-              className="group p-7 flex flex-col gap-5 hover:bg-neutral-50 transition-colors duration-150 relative overflow-hidden"
-            >
-              {/* Accent line */}
-              <div className="absolute top-0 left-0 w-full h-[2px] bg-neutral-900 scale-x-0 group-hover:scale-x-100 transition-transform duration-200 origin-left" />
+        {/* En-tête */}
+        <header className="max-w-2xl mb-16 sm:mb-24">
+          <h2 className="font-serif text-[40px] sm:text-[52px] leading-none tracking-tight text-neutral-900 mb-5">
+            Formules
+          </h2>
+          <p className="text-[16px] leading-relaxed text-neutral-600">
+            Chaque projet est unique, chaque devis aussi. Les formules ci-dessous
+            donnent la portée habituelle de chaque type de mission — le tarif final
+            dépend de vos besoins, délais et fonctionnalités.
+          </p>
+        </header>
 
-              {/* Num + name */}
-              <div>
-                <span className="text-xs font-mono text-neutral-300 block mb-2">
-                  {s.num}
-                </span>
-                <h3 className="text-sm font-semibold text-neutral-900 tracking-tight">
+        {/* Formules en lignes */}
+        <div>
+          {services.map((s) => (
+            <article
+              key={s.name}
+              className="grid grid-cols-1 lg:grid-cols-12 gap-x-10 gap-y-6 items-start border-t border-neutral-200 py-10 sm:py-12"
+            >
+              {/* Nom + description + CTA */}
+              <div className="lg:col-span-4">
+                <h3 className="font-serif text-[26px] sm:text-[28px] leading-tight text-neutral-900 mb-3">
                   {s.name}
                 </h3>
+                <p className="text-[15px] leading-relaxed text-neutral-600 max-w-[42ch] mb-5">
+                  {s.description}
+                </p>
+                <button
+                  onClick={scrollToContact}
+                  className="inline-block text-[14px] text-neutral-900 border-b border-neutral-900 pb-0.5 transition-colors hover:text-neutral-500 hover:border-neutral-400 outline-none focus-visible:text-neutral-500"
+                >
+                  Obtenir un devis
+                </button>
               </div>
 
-              {/* Description */}
-              <p className="text-sm text-neutral-400 leading-relaxed flex-1">
-                {s.description}
-              </p>
-
-              {/* Scope */}
-              <ul className="flex flex-col gap-1.5">
-                {s.scope.map((item) => (
-                  <li key={item} className="flex items-center gap-2">
-                    <span className="w-1 h-1 rounded-full bg-neutral-300 shrink-0" />
-                    <span className="text-xs text-neutral-400">{item}</span>
-                  </li>
-                ))}
-              </ul>
-
-              {/* CTA */}
-              <button
-                onClick={scrollToContact}
-                className="flex items-center justify-between w-full text-xs font-medium text-neutral-500 border border-neutral-200 px-3.5 py-2 rounded-md hover:border-neutral-400 hover:text-neutral-900 transition-all duration-150 group/btn mt-auto"
-              >
-                Obtenir un devis
-                <ArrowUpRight
-                  size={12}
-                  className="text-neutral-300 group-hover/btn:text-neutral-700 transition-colors"
-                />
-              </button>
-            </div>
+              {/* Contenu de la formule */}
+              <div className="lg:col-span-7 lg:col-start-6">
+                <ul className="grid grid-cols-1 sm:grid-cols-2 gap-x-8 gap-y-2.5">
+                  {s.scope.map((item) => (
+                    <li
+                      key={item}
+                      className="flex items-baseline gap-3 text-[14px] text-neutral-600"
+                    >
+                      <span className="w-1 h-1 rounded-full bg-neutral-400 shrink-0 translate-y-[-2px]" />
+                      {item}
+                    </li>
+                  ))}
+                </ul>
+              </div>
+            </article>
           ))}
         </div>
-      </div>
 
-      {/* Footer note */}
-      <div className="max-w-6xl mx-auto px-6 py-4 border-t border-neutral-100">
-        <p className="text-xs text-neutral-400 leading-relaxed">
-          Tous les projets font l'objet d'un devis personnalisé gratuit.
-          Les formules ci-dessus reflètent la portée habituelle de chaque type de mission —
-          le tarif final dépend de vos besoins spécifiques, délais et fonctionnalités.
-          <span className="text-neutral-600 font-medium"> Réponse sous 24h.</span>
-        </p>
+        {/* Pied — appel à l'action */}
+        <div className="mt-16 sm:mt-20 pt-10 border-t border-neutral-200 flex flex-col sm:flex-row sm:items-end sm:justify-between gap-6">
+          <div>
+            <p className="text-[15px] text-neutral-500 mb-1">
+              Devis personnalisé et gratuit — réponse sous 24 h.
+            </p>
+            <p className="font-serif text-[24px] text-neutral-900 leading-snug">
+              Chiffrons votre projet.
+            </p>
+          </div>
+          <button
+            onClick={scrollToContact}
+            className="inline-block text-[14px] text-neutral-900 border-b border-neutral-900 pb-0.5 transition-colors hover:text-neutral-500 hover:border-neutral-400 outline-none focus-visible:text-neutral-500 self-start sm:self-auto"
+          >
+            Demander un devis
+          </button>
+        </div>
       </div>
     </section>
   )
