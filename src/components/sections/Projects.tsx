@@ -1,122 +1,165 @@
 "use client"
-import Link from "next/link"
+
+import { useState } from "react"
 import Image from "next/image"
-import { useRef } from "react"
 
-const projects = [
-  { num: "01", title: "Portfolio Personnel", description: "Portfolio responsive avec animations Framer Motion.", image: "/projects/ryansdee.png", url: "https://ryansdee.netlify.app/", tags: ["Next.js", "Tailwind", "Framer"] },
-  { num: "02", title: "Clubtwee", description: "Site vitrine pour un café local — identité soignée.", image: "/projects/clubtwee.png", url: "https://clubtwee.netlify.app/", tags: ["HTML", "Tailwind"] },
-  { num: "03", title: "Vits Architecture", description: "Landing page pour un cabinet d'architecture belge.", image: "/projects/vits.png", url: "https://vits-architecture.netlify.app/", tags: ["HTML", "Tailwind"] },
-  { num: "04", title: "Garage Laurent", description: "Site avec backend PHP pour un garage automobile.", image: "/projects/garage.png", url: "https://garagelaurent.be/", tags: ["PHP", "Tailwind"] },
-  { num: "05", title: "SubTrack", description: "Suivi et optimisation d'abonnements en ligne.", image: "/projects/subtrack.png", url: "https://tracksub.netlify.app/", tags: ["Next.js", "Firebase"] },
-  { num: "06", title: "Books & Bites", description: "Plateforme collaborative de critiques littéraires.", image: "/projects/booksandbites.png", url: "https://books-and-bites.netlify.app/", tags: ["Next.js", "Firebase"] },
-  { num: "07", title: "Vadim Thevelin", description: "Portfolio photographique immersif avec portail client.", image: "/projects/vadim.png", url: "https://vath-portofolio.netlify.app/", tags: ["Next.js", "Firebase"] },
-  { num: "08", title: "Woppy", description: "Marketplace emplois étudiants — géoloc, paiements, notifs.", image: "/projects/woppy.png", url: "https://woppy.netlify.app/", tags: ["Next.js", "Stripe", "Leaflet"] },
-  { num: "09", title: "Le Brouillon", description: "Plateforme éditoriale pour une écrivaine belge.", image: "/projects/lebrouillon.png", url: "https://le-brouillon.netlify.app/", tags: ["Next.js", "Firebase"] },
-]
-
-function ProjectCard({ project }: { project: typeof projects[0] }) {
-  const cardRef = useRef<HTMLDivElement>(null)
-
-  const handleMouseMove = (e: React.MouseEvent<HTMLDivElement>) => {
-    const card = cardRef.current
-    if (!card) return
-    const r = card.getBoundingClientRect()
-    const x = (e.clientX - r.left) / r.width - 0.5
-    const y = (e.clientY - r.top) / r.height - 0.5
-    card.style.transform = `rotateX(${-y * 14}deg) rotateY(${x * 14}deg) scale(1.02)`
-  }
-
-  const handleMouseLeave = () => {
-    if (cardRef.current)
-      cardRef.current.style.transform = "rotateX(4deg) rotateY(-4deg) scale(0.97)"
-  }
-
-  return (
-    <div
-      className="[perspective:900px]"
-      onMouseMove={handleMouseMove}
-      onMouseLeave={handleMouseLeave}
-    >
-      <Link href={project.url} target="_blank" rel="noopener noreferrer">
-        <div
-          ref={cardRef}
-          className="relative rounded-[14px] overflow-hidden cursor-pointer [transform-style:preserve-3d] [transform:rotateX(4deg)_rotateY(-4deg)_scale(0.97)] transition-[transform,box-shadow] duration-[350ms] ease-[cubic-bezier(.23,1,.32,1)] bg-neutral-900 aspect-[4/3] group hover:[box-shadow:0_24px_60px_rgba(0,0,0,.22),0_4px_12px_rgba(0,0,0,.12)]"
-        >
-          {/* Image */}
-          <Image
-            src={project.image}
-            alt={project.title}
-            fill
-            className="object-cover transition-[transform,filter] duration-500 ease-[cubic-bezier(.23,1,.32,1)] group-hover:scale-[1.04] group-hover:brightness-[0.45]"
-            sizes="(max-width: 768px) 100vw, 33vw"
-          />
-
-          {/* Gradient overlay */}
-          <div className="absolute inset-0 bg-gradient-to-t from-black/85 via-transparent to-transparent" />
-
-          {/* Shine */}
-          <div className="absolute inset-0 rounded-[14px] opacity-0 group-hover:opacity-100 transition-opacity duration-300 bg-[radial-gradient(circle_at_30%_30%,rgba(255,255,255,.06),transparent_60%)] pointer-events-none" />
-
-          {/* Arrow */}
-          <div className="absolute top-3.5 right-3.5 w-7 h-7 rounded-full bg-white/10 border border-white/20 flex items-center justify-center opacity-0 scale-75 group-hover:opacity-100 group-hover:scale-100 transition-all duration-200 text-white text-[13px]">
-            ↗
-          </div>
-
-          {/* Info */}
-          <div className="absolute bottom-0 left-0 right-0 p-[18px] translate-y-1 group-hover:translate-y-0 transition-transform duration-[350ms] ease-[cubic-bezier(.23,1,.32,1)]">
-            <p className="text-[10px] font-mono text-white/45 tracking-[.12em] mb-1">{project.num}</p>
-            <p className="font-serif text-[17px] font-normal text-white leading-tight mb-1.5">{project.title}</p>
-            <p className="text-[11px] text-white/60 leading-relaxed max-h-0 overflow-hidden opacity-0 group-hover:max-h-16 group-hover:opacity-100 transition-all duration-300">
-              {project.description}
-            </p>
-            <div className="flex flex-wrap gap-1 mt-2.5 opacity-0 translate-y-1.5 group-hover:opacity-100 group-hover:translate-y-0 transition-all duration-300 delay-[50ms]">
-              {project.tags.map((tag) => (
-                <span key={tag} className="text-[9px] tracking-[.08em] uppercase text-white/70 border border-white/25 px-[7px] py-[3px] rounded-sm">
-                  {tag}
-                </span>
-              ))}
-            </div>
-          </div>
-        </div>
-      </Link>
-    </div>
-  )
+type Project = {
+  slug: string
+  title: string
+  client: string
+  year: string
+  status?: string
+  description: string
+  stack: string[]
+  image: string
+  url: string
 }
 
+const projects: Project[] = [
+  {
+    slug: "palki",
+    title: "Palki",
+    client: "Institut de beauté, Ixelles",
+    year: "2026",
+    status: "Livré",
+    description:
+      "Site complet avec prise de rendez-vous par soin. La gérante modifie elle-même ses disponibilités semaine par semaine, ses tarifs et ses promotions, sans passer par moi.",
+    stack: ["Next.js", "Firebase", "Tailwind"],
+    image: "/projects/palki.png",
+    url: "https://palki.netlify.app/",
+  },
+  {
+    slug: "woppy",
+    title: "Woppy",
+    client: "Plateforme de jobs étudiants",
+    year: "2025",
+    description:
+      "Marketplace qui met en relation étudiants et recruteurs : offres géolocalisées, paiements en ligne et notifications en temps réel.",
+    stack: ["Next.js", "Firebase", "Stripe", "Leaflet"],
+    image: "/projects/woppy.png",
+    url: "https://woppy.netlify.app/",
+  },
+  {
+    slug: "vadim",
+    title: "Vadim Thevelin",
+    client: "Photographe, Bruxelles",
+    year: "2025",
+    description:
+      "Portfolio photo avec un espace client privé pour livrer les galeries et gérer les commandes.",
+    stack: ["Next.js", "Firebase"],
+    image: "/projects/vadim.png",
+    url: "https://vadimthevelin.com/",
+  },
+  {
+    slug: "vits",
+    title: "Vits Architecture",
+    client: "Cabinet d'architecture",
+    year: "2025",
+    description:
+      "Site vitrine sobre qui laisse toute la place aux projets bâtis du cabinet.",
+    stack: ["HTML", "Tailwind"],
+    image: "/projects/vits.png",
+    url: "https://vits-architecture.netlify.app/",
+  },
+]
+
 export default function Projects() {
+  const [active, setActive] = useState(projects[0].slug)
+  const current = projects.find((p) => p.slug === active) ?? projects[0]
+
   return (
-    <section id="projets" className="border-b border-neutral-200 py-12">
-      <div className="max-w-6xl mx-auto px-6">
-        {/* Header */}
-        <div className="flex items-end justify-between pb-8 border-b border-neutral-100 mb-10">
-          <div>
-            <p className="text-[10px] tracking-[.16em] uppercase text-neutral-400 font-medium mb-1.5">
-              Travaux sélectionnés
-            </p>
-            <h2 className="font-serif text-[32px] font-normal tracking-tight text-neutral-900 leading-none">
-              Projets
-            </h2>
-          </div>
-          <div className="text-right">
-            <p className="text-[11px] text-neutral-400 tabular-nums">2022 — 2026</p>
-            <p className="text-[11px] text-neutral-400 tabular-nums mt-0.5">09 références</p>
-          </div>
-        </div>
+    <section id="projets" className="border-b border-neutral-200 py-20 sm:py-28">
+      <div className="max-w-5xl mx-auto px-6">
+        <header className="flex items-baseline justify-between gap-6 mb-12">
+          <h2 className="font-serif text-[34px] sm:text-[42px] leading-none tracking-tight text-neutral-900">
+            Projets
+          </h2>
+          <p className="text-[14px] text-neutral-500">Sélection, 2025 – 2026</p>
+        </header>
 
-        {/* Grid 3D */}
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
-          {projects.map((p) => <ProjectCard key={p.num} project={p} />)}
-        </div>
+        <div className="grid grid-cols-1 lg:grid-cols-12 gap-10">
+          {/* Liste */}
+          <ol className="lg:col-span-7 border-t border-neutral-200">
+            {projects.map((p) => (
+              <li
+                key={p.slug}
+                onMouseEnter={() => setActive(p.slug)}
+                onFocus={() => setActive(p.slug)}
+                className="border-b border-neutral-200"
+              >
+                <a
+                  href={p.url}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="group block py-7 outline-none"
+                >
+                  <div className="flex items-baseline justify-between gap-4 mb-2">
+                    <h3 className="font-serif text-[26px] leading-tight text-neutral-900 group-hover:text-neutral-500 group-focus-visible:underline transition-colors">
+                      {p.title}
+                    </h3>
+                    <span className="text-[13px] text-neutral-500 tabular-nums shrink-0">
+                      {p.year}
+                    </span>
+                  </div>
 
-        {/* Footer */}
-        <div className="flex items-center justify-between pt-7 mt-10 border-t border-neutral-100">
-          <span className="text-[10px] tracking-[.14em] uppercase text-neutral-400">
-            Belgique · Disponible
-          </span>
-          <span className="font-serif text-[13px] italic text-neutral-500">
-            Chaque projet, une intention.
-          </span>
+                  <p className="text-[14px] text-neutral-500 mb-3">
+                    {p.client}
+                    {p.status && (
+                      <>
+                        <span className="mx-2 text-neutral-300">·</span>
+                        <span className="text-emerald-700">{p.status}</span>
+                      </>
+                    )}
+                  </p>
+
+                  <p className="text-[15px] leading-relaxed text-neutral-600 max-w-[52ch] mb-4">
+                    {p.description}
+                  </p>
+
+                  {/* Aperçu mobile */}
+                  <div className="lg:hidden relative aspect-[16/10] mb-4 overflow-hidden rounded-md bg-neutral-100">
+                    <Image
+                      src={p.image}
+                      alt={`Aperçu du site ${p.title}`}
+                      fill
+                      sizes="100vw"
+                      className="object-cover object-top"
+                    />
+                  </div>
+
+                  <p className="text-[13px] text-neutral-400">{p.stack.join(" / ")}</p>
+                </a>
+              </li>
+            ))}
+          </ol>
+
+          {/* Aperçu desktop */}
+          <div className="hidden lg:block lg:col-span-5">
+            <div className="sticky top-24">
+              <div className="relative aspect-[4/3] overflow-hidden rounded-md bg-neutral-100 border border-neutral-200">
+                {projects.map((p) => (
+                  <Image
+                    key={p.slug}
+                    src={p.image}
+                    alt={`Aperçu du site ${p.title}`}
+                    fill
+                    sizes="40vw"
+                    className={`object-cover object-top transition-opacity duration-300 ${
+                      p.slug === current.slug ? "opacity-100" : "opacity-0"
+                    }`}
+                  />
+                ))}
+              </div>
+              <a
+                href={current.url}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="inline-block mt-4 text-[14px] text-neutral-900 border-b border-neutral-900 pb-0.5 hover:text-neutral-500 hover:border-neutral-400 transition-colors"
+              >
+                Voir le site de {current.title}
+              </a>
+            </div>
+          </div>
         </div>
       </div>
     </section>

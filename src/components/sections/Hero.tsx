@@ -1,113 +1,58 @@
 import Link from "next/link"
-import { MapPin } from "lucide-react"
 
-const stats = [
-  { label: "Statut", value: "Disponible", green: true },
-  { label: "Localisation", value: "Belgique" },
-  { label: "Expérience", value: "4+ ans · Freelance" },
-  { label: "Stack principal", value: "Next.js · Firebase · Tailwind", mono: true },
-  { label: "Projets livrés", value: "12+" },
-  { label: "Délai de réponse", value: "Sous 72h" },
+const facts = [
+  { label: "Basé à", value: "Soignies, Belgique" },
+  { label: "Freelance depuis", value: "2022" },
+  { label: "Je travaille avec", value: "Next.js, TypeScript, Firebase" },
+  { label: "Réponse", value: "Sous 24 h" },
 ]
-
-const pills = [
-  "TypeScript", "React", "Next.js", "Tailwind CSS",
-  "Firebase", "Stripe", "Framer Motion", "React Native",
-  "Nodemailer", "Linux",
-]
-
-function cn(...classes: (string | boolean | undefined)[]) {
-  return classes.filter(Boolean).join(" ")
-}
 
 export default function Hero() {
   return (
-    <>
-      <section className="pt-14 border-b border-neutral-200">
-        <div className="max-w-6xl mx-auto px-6 py-16 grid grid-cols-1 lg:grid-cols-2 gap-12 items-start">
-          <div>
-            <div className="mb-5">
-              <span className="inline-flex items-center gap-2 text-xs text-neutral-500 bg-neutral-100 border border-neutral-200 px-3 py-1.5 rounded-full">
-                <MapPin size={11} />
-                Développeur Web &amp; IT · Belgique
-              </span>
-            </div>
+    <section className="border-b border-neutral-200">
+      <div className="max-w-5xl mx-auto px-6 pt-16 pb-20 sm:pt-24 sm:pb-28">
+        <h1 className="font-serif text-[40px] sm:text-[56px] leading-[1.08] tracking-tight text-neutral-900 max-w-[18ch] mb-8">
+          Je fais des sites et des applications web, et je dépanne des ordinateurs.
+        </h1>
 
-            <h1 className="text-4xl sm:text-5xl font-semibold tracking-tight text-neutral-900 leading-[1.08] mb-4">
-              Interfaces robustes.
-              <br />
-              <span className="text-neutral-400">Solutions durables.</span>
-            </h1>
-
-            <p className="text-base text-neutral-500 leading-relaxed max-w-md mb-8">
-              Je conçois et développe des applications web full-stack pour des
-              clients en Belgique et à distance — du site vitrine au SaaS
-              complet.
-            </p>
-
-            <div className="flex items-center gap-3">
-              <Link
-                href="#projets"
-                className="text-sm font-medium bg-neutral-900 text-white px-5 py-2.5 rounded-md hover:bg-neutral-700 transition-colors"
-              >
-                Voir les projets
-              </Link>
-              <Link
-                href="#contact"
-                className="text-sm font-medium text-neutral-700 bg-white border border-neutral-200 px-5 py-2.5 rounded-md hover:border-neutral-400 transition-colors"
-              >
-                Me contacter
-              </Link>
-            </div>
-          </div>
-
-          <div className="bg-neutral-50 border border-neutral-200 rounded-xl overflow-hidden">
-            {stats.map((stat, i) => (
-              <div
-                key={i}
-                className="flex justify-between items-center px-5 py-3.5 border-b border-neutral-100 last:border-0"
-              >
-                <span className="text-sm text-neutral-400">{stat.label}</span>
-
-                {stat.green ? (
-                  <span className="flex items-center gap-1.5 text-sm font-medium text-green-600">
-                    <span className="relative flex h-2 w-2">
-                      <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-green-400 opacity-75" />
-                      <span className="relative inline-flex rounded-full h-2 w-2 bg-green-500" />
-                    </span>
-                    {stat.value}
-                  </span>
-                ) : (
-                  <span
-                    className={cn(
-                      "text-sm font-medium",
-                      stat.mono && "font-mono text-xs text-neutral-500 font-normal"
-                    )}
-                  >
-                    {stat.value}
-                  </span>
-                )}
-              </div>
-            ))}
-          </div>
+        <div className="max-w-[58ch] space-y-4 text-[17px] leading-relaxed text-neutral-600 mb-10">
+          <p>
+            Je m'appelle Ryan. Depuis 2022, je conçois et développe des sites pour
+            des indépendants et des petites entreprises en Belgique : un institut de
+            beauté à Ixelles, un photographe bruxellois, un cabinet d'architecture,
+            une plateforme de jobs étudiants.
+          </p>
+          <p>
+            Je m'occupe de tout, de la première maquette à la mise en ligne, et je
+            reste votre seul interlocuteur. À côté, je dépanne les ordinateurs à
+            domicile autour de Soignies.
+          </p>
         </div>
-      </section>
 
-      <div className="border-b border-neutral-200 bg-neutral-50">
-        <div className="max-w-6xl mx-auto px-6 py-3 flex items-center gap-2 flex-wrap">
-          <span className="text-xs font-semibold text-neutral-300 uppercase tracking-wider mr-2">
-            Stack
-          </span>
-          {pills.map((pill) => (
-            <span
-              key={pill}
-              className="text-xs text-neutral-500 bg-white border border-neutral-200 px-2.5 py-1 rounded"
-            >
-              {pill}
-            </span>
+        <div className="flex flex-wrap items-center gap-x-8 gap-y-4 mb-16">
+          <Link
+            href="#contact"
+            className="text-[15px] font-medium bg-neutral-900 text-white px-5 py-2.5 rounded-md hover:bg-neutral-700 transition-colors"
+          >
+            Parlons de votre projet
+          </Link>
+          <Link
+            href="#projets"
+            className="text-[15px] text-neutral-900 border-b border-neutral-900 pb-0.5 hover:text-neutral-500 hover:border-neutral-400 transition-colors"
+          >
+            Voir mes projets
+          </Link>
+        </div>
+
+        <dl className="grid grid-cols-2 sm:grid-cols-4 gap-y-6 gap-x-8 pt-8 border-t border-neutral-200">
+          {facts.map((f) => (
+            <div key={f.label}>
+              <dt className="text-[13px] text-neutral-500 mb-1">{f.label}</dt>
+              <dd className="text-[15px] text-neutral-900">{f.value}</dd>
+            </div>
           ))}
-        </div>
+        </dl>
       </div>
-    </>
+    </section>
   )
 }

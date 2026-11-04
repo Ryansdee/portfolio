@@ -1,22 +1,29 @@
 "use client"
 
 import { useState } from "react"
-import { ArrowUpRight, CheckCircle, AlertCircle, Search, ExternalLink } from "lucide-react"
+import { ChevronDown } from "lucide-react"
 
 const services = [
-  "Site vitrine / Landing page",
-  "Site business multi-pages",
-  "E-commerce / SaaS",
-  "Application full-stack",
+  "Site vitrine",
+  "Application web sur mesure",
   "Application mobile",
-  "Support IT",
+  "Modification d'un site existant",
+  "Dépannage informatique",
   "Autre",
 ]
+
+const inputClass =
+  "w-full bg-white border border-neutral-300 text-neutral-900 placeholder:text-neutral-400 text-[15px] px-3.5 py-2.5 rounded-md outline-none transition-colors focus:border-neutral-900"
+
+const labelClass = "text-[13px] text-neutral-600"
+
+const linkClass =
+  "text-[14px] text-neutral-900 border-b border-neutral-900 pb-0.5 transition-colors hover:text-neutral-500 hover:border-neutral-400"
 
 // ─── Retrouver le portail ─────────────────────────────────────────────────────
 
 function PortalFinder() {
-  const [email, setEmail]   = useState("")
+  const [email, setEmail] = useState("")
   const [status, setStatus] = useState<"idle" | "loading" | "sent" | "notfound" | "error">("idle")
 
   const handleFind = async (e: React.FormEvent) => {
@@ -38,75 +45,62 @@ function PortalFinder() {
   }
 
   return (
-    <div className="border-t border-neutral-100 pt-8 mt-8">
-      <p className="text-[10px] font-semibold text-neutral-400 uppercase tracking-widest mb-4">
-        Retrouver mon espace client
+    <div className="pt-8 mt-10 border-t border-neutral-200">
+      <p className="text-[15px] text-neutral-900 mb-1">Déjà client ?</p>
+      <p className="text-[14px] text-neutral-500 mb-4">
+        Entrez votre email, je vous renvoie le lien de votre espace client.
       </p>
 
       {status === "sent" ? (
-        <div className="flex items-start gap-3 bg-green-50 border border-green-100 rounded-xl px-4 py-3.5">
-          <CheckCircle size={14} className="text-green-500 mt-0.5 shrink-0" />
-          <div>
-            <p className="text-sm font-medium text-green-800 mb-0.5">Lien envoyé !</p>
-            <p className="text-xs text-green-600 leading-relaxed">
-              Vérifiez votre boîte mail — le lien d'accès vous a été renvoyé.
-            </p>
-            <button
-              onClick={() => { setStatus("idle"); setEmail("") }}
-              className="text-xs text-green-600 underline underline-offset-4 mt-2 hover:text-green-800 transition-colors"
-            >
-              Réessayer avec un autre email
-            </button>
-          </div>
+        <div>
+          <p className="text-[14px] text-emerald-700 mb-2">
+            Lien envoyé. Vérifiez votre boîte mail.
+          </p>
+          <button
+            onClick={() => { setStatus("idle"); setEmail("") }}
+            className={linkClass}
+          >
+            Utiliser un autre email
+          </button>
         </div>
       ) : (
         <form onSubmit={handleFind} className="flex flex-col gap-3">
-          <div className="flex gap-2">
+          <div className="flex flex-col sm:flex-row gap-2.5">
             <input
               type="email"
               value={email}
               onChange={(e) => { setEmail(e.target.value); setStatus("idle") }}
               placeholder="votre@email.com"
               required
-              className="flex-1 bg-white border border-neutral-200 text-neutral-900 placeholder:text-neutral-300 text-sm px-3.5 py-2.5 rounded-lg outline-none focus:border-neutral-900 transition-colors"
+              aria-label="Votre email"
+              className={`flex-1 ${inputClass}`}
             />
             <button
               type="submit"
               disabled={status === "loading" || !email.trim()}
-              className="flex items-center gap-2 text-sm font-medium bg-neutral-900 text-white px-4 py-2.5 rounded-lg hover:bg-neutral-700 disabled:opacity-40 disabled:cursor-not-allowed transition-all whitespace-nowrap"
+              className="text-[14px] text-neutral-900 border border-neutral-900 px-4 py-2.5 rounded-md transition-colors hover:bg-neutral-900 hover:text-white disabled:opacity-40 disabled:cursor-not-allowed whitespace-nowrap"
             >
-              {status === "loading" ? (
-                <span className="w-3.5 h-3.5 border-2 border-white/30 border-t-white rounded-full animate-spin" />
-              ) : (
-                <Search size={13} />
-              )}
-              Recevoir le lien
+              {status === "loading" ? "Envoi…" : "Recevoir le lien"}
             </button>
           </div>
 
           {status === "notfound" && (
-            <div className="flex items-center gap-2 text-xs text-amber-700 bg-amber-50 border border-amber-100 px-3.5 py-2.5 rounded-lg">
-              <AlertCircle size={12} className="shrink-0" />
-              Aucune demande trouvée pour cet email.
-            </div>
+            <p className="text-[13px] text-amber-800">
+              Aucune demande n'est associée à cet email.
+            </p>
           )}
           {status === "error" && (
-            <div className="flex items-center gap-2 text-xs text-red-600 bg-red-50 border border-red-100 px-3.5 py-2.5 rounded-lg">
-              <AlertCircle size={12} className="shrink-0" />
+            <p className="text-[13px] text-red-700">
               Une erreur est survenue. Réessayez dans quelques instants.
-            </div>
+            </p>
           )}
-
-          <p className="text-[10px] text-neutral-300 leading-relaxed">
-            Un email contenant votre lien d'accès personnel vous sera renvoyé.
-          </p>
         </form>
       )}
     </div>
   )
 }
 
-// ─── Main ─────────────────────────────────────────────────────────────────────
+// ─── Section ──────────────────────────────────────────────────────────────────
 
 export default function Contact() {
   const [form, setForm] = useState({
@@ -136,183 +130,135 @@ export default function Contact() {
   }
 
   return (
-    <section id="contact" className="border-b border-neutral-200">
+    <section id="contact" className="border-b border-neutral-200 py-20 sm:py-28">
+      <div className="max-w-5xl mx-auto px-6 grid grid-cols-1 lg:grid-cols-12 gap-y-14 lg:gap-x-10">
+        {/* Gauche */}
+        <div className="lg:col-span-5">
+          <h2 className="font-serif text-[34px] sm:text-[42px] leading-none tracking-tight text-neutral-900 mb-5">
+            Parlons de votre projet
+          </h2>
+          <p className="text-[15px] leading-relaxed text-neutral-600 max-w-[40ch] mb-8">
+            Décrivez-moi en quelques lignes ce que vous avez en tête. Je vous
+            réponds moi-même sous 24 h, avec un devis gratuit et sans engagement.
+          </p>
 
-      <div className="max-w-6xl mx-auto px-6 py-5 border-b border-neutral-100 flex items-baseline justify-between">
-        <span className="text-xs font-semibold text-neutral-400 uppercase tracking-wider">Contact</span>
-        <span className="text-xs font-mono text-neutral-300">Réponse sous 24h</span>
-      </div>
-
-      <div className="max-w-6xl mx-auto px-6">
-        <div className="grid grid-cols-1 lg:grid-cols-2 divide-y lg:divide-y-0 lg:divide-x divide-neutral-100">
-
-          {/* Gauche */}
-          <div className="py-14 lg:pr-14">
-            <p className="text-3xl sm:text-4xl font-semibold tracking-tight text-neutral-900 leading-[1.1] mb-3">
-              Un projet en tête ?
-            </p>
-            <p className="text-3xl sm:text-4xl font-semibold tracking-tight text-neutral-300 leading-[1.1] mb-10">
-              Parlons-en.
-            </p>
-            <p className="text-sm text-neutral-500 leading-relaxed max-w-sm mb-12">
-              Disponible pour des missions freelance en Belgique et à distance.
-              Chaque devis est personnalisé, gratuit, et envoyé sous 24h.
-            </p>
-
-            <div className="mb-10">
-              {[
-                { label: "Localisation",    value: "Belgique" },
-                { label: "Disponibilité",   value: "Disponible", green: true },
-                { label: "Mode de travail", value: "Remote · On-site" },
-                { label: "Expérience",      value: "4+ ans · Freelance" },
-              ].map((item) => (
-                <div key={item.label} className="flex justify-between items-center py-3.5 border-b border-neutral-100 first:border-t">
-                  <span className="text-sm text-neutral-400">{item.label}</span>
-                  {item.green ? (
-                    <span className="flex items-center gap-1.5 text-sm font-medium text-green-600">
-                      <span className="relative flex h-2 w-2">
-                        <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-green-400 opacity-75" />
-                        <span className="relative inline-flex rounded-full h-2 w-2 bg-green-500" />
-                      </span>
-                      {item.value}
-                    </span>
-                  ) : (
-                    <span className="text-sm font-medium text-neutral-700">{item.value}</span>
-                  )}
-                </div>
-              ))}
-            </div>
-
-            <div className="flex gap-2">
-              <a href="https://github.com/ryansdee" target="_blank" rel="noopener noreferrer"
-                className="group inline-flex items-center gap-1.5 text-xs font-medium text-neutral-500 border border-neutral-200 px-4 py-2 rounded-md hover:border-neutral-900 hover:text-neutral-900 transition-all duration-150">
-                GitHub <ArrowUpRight size={11} className="text-neutral-300 group-hover:text-neutral-700 transition-colors" />
-              </a>
-              <a href="https://www.linkedin.com/in/ryan-deschuyteneer-2b1395201/" target="_blank" rel="noopener noreferrer"
-                className="group inline-flex items-center gap-1.5 text-xs font-medium text-neutral-500 border border-neutral-200 px-4 py-2 rounded-md hover:border-neutral-900 hover:text-neutral-900 transition-all duration-150">
-                LinkedIn <ArrowUpRight size={11} className="text-neutral-300 group-hover:text-neutral-700 transition-colors" />
-              </a>
-            </div>
-
-            {/* Retrouver le portail */}
-            <PortalFinder />
+          <div className="flex items-center gap-6">
+            <a
+              href="https://github.com/ryansdee"
+              target="_blank"
+              rel="noopener noreferrer"
+              className={linkClass}
+            >
+              GitHub
+            </a>
+            <a
+              href="https://www.linkedin.com/in/ryan-deschuyteneer-2b1395201/"
+              target="_blank"
+              rel="noopener noreferrer"
+              className={linkClass}
+            >
+              LinkedIn
+            </a>
           </div>
 
-          {/* Droite — formulaire */}
-          <div className="py-14 lg:pl-14">
-            <div className="flex items-center gap-2 mb-8">
-              <span className="relative flex h-1.5 w-1.5">
-                <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-green-400 opacity-75" />
-                <span className="relative inline-flex rounded-full h-1.5 w-1.5 bg-green-500" />
-              </span>
-              <span className="text-xs text-neutral-400 uppercase tracking-widest font-medium">
-                Demande de devis
-              </span>
+          <PortalFinder />
+        </div>
+
+        {/* Droite — formulaire */}
+        <div className="lg:col-span-7">
+          {status === "success" ? (
+            <div className="border-t border-neutral-200 pt-8">
+              <p className="font-serif text-[26px] text-neutral-900 mb-2">Merci, c'est bien reçu.</p>
+              <p className="text-[15px] text-neutral-600 leading-relaxed mb-6">
+                Je reviens vers vous sous 24 h. Vous recevrez aussi un email avec le
+                lien de votre espace client.
+              </p>
+              <button onClick={() => setStatus("idle")} className={linkClass}>
+                Envoyer une autre demande
+              </button>
             </div>
-
-            {status === "success" ? (
-              <div className="flex flex-col items-start gap-5 py-8">
-                <div className="w-10 h-10 rounded-full bg-green-50 border border-green-100 flex items-center justify-center">
-                  <CheckCircle size={18} className="text-green-500" />
-                </div>
-                <div>
-                  <p className="text-base font-semibold text-neutral-900 mb-1">Demande reçue.</p>
-                  <p className="text-sm text-neutral-400 leading-relaxed">
-                    Je vous recontacte sous 24h avec une estimation personnalisée.
-                  </p>
-                </div>
-                <button
-                  onClick={() => setStatus("idle")}
-                  className="text-xs text-neutral-400 hover:text-neutral-700 underline underline-offset-4 transition-colors"
-                >
-                  Envoyer une autre demande
-                </button>
+          ) : (
+            <form onSubmit={handleSubmit} className="flex flex-col gap-5">
+              <div className="grid grid-cols-2 gap-3">
+                {[
+                  { name: "firstName", label: "Prénom", placeholder: "Jean" },
+                  { name: "lastName", label: "Nom", placeholder: "Dupont" },
+                ].map((field) => (
+                  <div key={field.name} className="flex flex-col gap-2">
+                    <label htmlFor={field.name} className={labelClass}>{field.label}</label>
+                    <input
+                      id={field.name}
+                      name={field.name}
+                      value={form[field.name as keyof typeof form]}
+                      onChange={handleChange}
+                      required
+                      placeholder={field.placeholder}
+                      className={inputClass}
+                    />
+                  </div>
+                ))}
               </div>
-            ) : (
-              <form onSubmit={handleSubmit} className="flex flex-col gap-5">
-                <div className="grid grid-cols-2 gap-3">
-                  {[
-                    { name: "firstName", label: "Prénom", placeholder: "Jean" },
-                    { name: "lastName",  label: "Nom",    placeholder: "Dupont" },
-                  ].map((field) => (
-                    <div key={field.name} className="flex flex-col gap-2">
-                      <label className="text-[10px] font-semibold text-neutral-400 uppercase tracking-widest">
-                        {field.label}
-                      </label>
-                      <input
-                        name={field.name}
-                        value={form[field.name as keyof typeof form]}
-                        onChange={handleChange}
-                        required
-                        placeholder={field.placeholder}
-                        className="w-full bg-white border border-neutral-200 text-neutral-900 placeholder:text-neutral-300 text-sm px-3.5 py-2.5 rounded-lg outline-none focus:border-neutral-900 transition-colors"
-                      />
-                    </div>
-                  ))}
-                </div>
 
-                <div className="flex flex-col gap-2">
-                  <label className="text-[10px] font-semibold text-neutral-400 uppercase tracking-widest">Email</label>
-                  <input
-                    name="email" type="email" value={form.email} onChange={handleChange} required
-                    placeholder="jean@entreprise.com"
-                    className="w-full bg-white border border-neutral-200 text-neutral-900 placeholder:text-neutral-300 text-sm px-3.5 py-2.5 rounded-lg outline-none focus:border-neutral-900 transition-colors"
+              <div className="flex flex-col gap-2">
+                <label htmlFor="email" className={labelClass}>Email</label>
+                <input
+                  id="email" name="email" type="email" value={form.email} onChange={handleChange} required
+                  placeholder="jean@exemple.be"
+                  className={inputClass}
+                />
+              </div>
+
+              <div className="flex flex-col gap-2">
+                <label htmlFor="service" className={labelClass}>Votre demande concerne</label>
+                <div className="relative">
+                  <select
+                    id="service" name="service" value={form.service} onChange={handleChange} required
+                    className={`${inputClass} appearance-none cursor-pointer pr-10`}
+                  >
+                    <option value="">Choisir…</option>
+                    {services.map((s) => <option key={s} value={s}>{s}</option>)}
+                  </select>
+                  <ChevronDown
+                    size={16}
+                    className="pointer-events-none absolute right-3.5 top-1/2 -translate-y-1/2 text-neutral-400"
                   />
                 </div>
+              </div>
 
-                <div className="flex flex-col gap-2">
-                  <label className="text-[10px] font-semibold text-neutral-400 uppercase tracking-widest">Type de projet</label>
-                  <div className="relative">
-                    <select
-                      name="service" value={form.service} onChange={handleChange} required
-                      className="w-full appearance-none bg-white border border-neutral-200 text-neutral-900 text-sm px-3.5 py-2.5 rounded-lg outline-none focus:border-neutral-900 transition-colors cursor-pointer pr-8"
-                    >
-                      <option value="">Sélectionner…</option>
-                      {services.map((s) => <option key={s} value={s}>{s}</option>)}
-                    </select>
-                    <span className="pointer-events-none absolute right-3 top-1/2 -translate-y-1/2 text-neutral-400 text-xs">↓</span>
-                  </div>
+              <div className="flex flex-col gap-2">
+                <div className="flex items-baseline justify-between">
+                  <label htmlFor="description" className={labelClass}>Quelques mots sur le projet</label>
+                  <span className="text-[12px] text-neutral-400 tabular-nums">
+                    {form.description.length}/500
+                  </span>
                 </div>
+                <textarea
+                  id="description" name="description" value={form.description} onChange={handleChange}
+                  required maxLength={500} rows={5}
+                  placeholder="Ce que vous voulez faire, pour qui, et pour quand."
+                  className={`${inputClass} resize-none leading-relaxed`}
+                />
+              </div>
 
-                <div className="flex flex-col gap-2">
-                  <div className="flex items-baseline justify-between">
-                    <label className="text-[10px] font-semibold text-neutral-400 uppercase tracking-widest">
-                      Description du projet
-                    </label>
-                    <span className="text-[10px] text-neutral-300">{form.description.length}/500</span>
-                  </div>
-                  <textarea
-                    name="description" value={form.description} onChange={handleChange}
-                    required maxLength={500} rows={4}
-                    placeholder="Fonctionnalités, public cible, délai souhaité, contraintes particulières…"
-                    className="w-full bg-white border border-neutral-200 text-neutral-900 placeholder:text-neutral-300 text-sm px-3.5 py-2.5 rounded-lg outline-none focus:border-neutral-900 transition-colors resize-none leading-relaxed"
-                  />
-                </div>
+              {status === "error" && (
+                <p className="text-[13px] text-red-700">
+                  Une erreur est survenue. Réessayez ou écrivez-moi directement.
+                </p>
+              )}
 
-                {status === "error" && (
-                  <div className="flex items-center gap-2.5 text-red-600 text-xs bg-red-50 border border-red-100 px-3.5 py-2.5 rounded-lg">
-                    <AlertCircle size={13} className="shrink-0" />
-                    Une erreur est survenue. Réessayez ou écrivez-moi directement.
-                  </div>
-                )}
-
+              <div className="flex flex-col sm:flex-row sm:items-center gap-4 mt-1">
                 <button
                   type="submit" disabled={status === "loading"}
-                  className="group relative flex items-center justify-center gap-2 w-full text-sm font-medium bg-neutral-900 text-white py-3 rounded-lg hover:bg-neutral-700 disabled:opacity-50 disabled:cursor-not-allowed transition-all duration-150 mt-1"
+                  className="text-[15px] font-medium bg-neutral-900 text-white px-6 py-3 rounded-md transition-colors hover:bg-neutral-700 disabled:opacity-50 disabled:cursor-not-allowed"
                 >
-                  {status === "loading" ? (
-                    <><span className="w-3.5 h-3.5 border-2 border-white/30 border-t-white rounded-full animate-spin" />Envoi en cours…</>
-                  ) : (
-                    <>Envoyer la demande <ArrowUpRight size={14} className="group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-transform duration-150" /></>
-                  )}
+                  {status === "loading" ? "Envoi en cours…" : "Envoyer"}
                 </button>
-
-                <p className="text-[10px] text-neutral-300 text-center leading-relaxed">
-                  Devis gratuit · Sans engagement · Réponse sous 24h
+                <p className="text-[13px] text-neutral-500">
+                  Devis gratuit, réponse sous 24 h.
                 </p>
-              </form>
-            )}
-          </div>
+              </div>
+            </form>
+          )}
         </div>
       </div>
     </section>
